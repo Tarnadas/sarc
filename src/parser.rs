@@ -92,6 +92,9 @@ pub enum Error {
 
     #[cfg(feature = "yaz0_sarc")]
     Yaz0Error(yaz0::Error),
+
+    #[cfg(feature = "ruzstd_sarc")]
+    RuZstdError
 }
 
 use std::io::Cursor;
@@ -126,7 +129,16 @@ impl SarcFile {
                     ).map_err(|e| Error::IoError(e))?;
                     &decompressed
                 }
-                #[cfg(not(feature = "zstd_sarc"))] {
+                #[cfg(feature = "ruzstd_sarc")] {
+                    use std::io::Read;
+                    decompressed = vec![];
+                    let mut cursor = Cursor::new(data);
+                    let mut decoder = ruzstd::StreamingDecoder::new(&mut cursor).map_err(|_| Error::RuZstdError)?;
+
+                    decoder.read_to_end(&mut decompressed).unwrap();
+                    &decompressed
+                }
+                #[cfg(not(any(feature = "zstd_sarc", feature = "ruzstd_sarc")))] {
                     return Err(Error::ParseError(
                         "ZSTD compression detected but zstd_sarc feature not enabled.".into()
                     ));

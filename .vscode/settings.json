@@ -1,0 +1,7 @@
+{
+  "rust-analyzer.checkOnSave.extraArgs": [
+    "--no-default-features",
+    "--target=wasm32-unknown-unknown",
+    "--features=ruzstd_sarc,yaz0_sarc"
+  ]
+}

@@ -8,6 +8,7 @@ edition = "2018"
 default = ["yaz0_sarc", "zstd_sarc"]
 yaz0_sarc = ["yaz0"]
 zstd_sarc = ["zstd"]
+ruzstd_sarc = ["ruzstd"]
 
 #sarctool = ["structopt"]
 
@@ -19,6 +20,7 @@ zstd_sarc = ["zstd"]
 [dependencies]
 nom = "5"
 binwrite = "0.2.1"
+ruzstd = { version = "0.2", optional = true }
 yaz0 = { version = "0.1.2" , optional = true }
 zstd = { version = "0.5.1", optional = true }
 
